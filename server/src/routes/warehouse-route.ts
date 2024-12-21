@@ -1,9 +1,11 @@
 import express from "express";
-import { createWarehouse } from "../controllers/warehouse-controller.js";
+import { addWarehouse } from "../controllers/warehouse-controller";
+import { isAuthenticated } from "../middlewares/auth-middleware";
+import { authorizeRoles } from "../middlewares/role-middleware";
 
 const router = express.Router();
 
 // Route for creating warehouse
-router.post("/add", createWarehouse);
+router.post("/add", isAuthenticated, authorizeRoles(["Admin",]), addWarehouse);
 
 export default router;

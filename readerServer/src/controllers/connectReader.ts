@@ -1,25 +1,35 @@
 import { Request, Response } from "express"
-import { tcpClientSocket } from "../app"
+import { clientSocket, tcpClientSocket } from "../app"
 import { connectReader } from "../helpers/connectReader"
 import { establishConnection } from "../utilts/establishConnection"
-import { redisClient } from "../libs/redis";
-export let readerConnected = false;
+import { redis } from "../libs/redis";
 
 
 
-export const setReaderConnected = (value: boolean) => readerConnected = value;
 
 
-export const connectReaderContoller = async  (req: Request, res: Response) => {
+export const connectReaderContoller = async (req: Request, res: Response) => {
     try {
-        if (readerConnected)
+        const connectionStatus = await redis.get("connection-status")
+
+        if (connectionStatus === "connected")
             return res.status(200).json({ message: "connection already there" })
+
+
         else {
-            setReaderConnected(true)
-            await connectReader(tcpClientSocket)
-            await establishConnection(tcpClientSocket)
+
+            await redis.set("connection-status", "connected")
+
+            await connectReader(tcpClientSocket);
+
+            const prop = await establishConnection(tcpClientSocket);
+            
+            await redis.set("connection-status", "connected")
+            
+            await clientSocket.emit("reader-connected", prop);
 
             res.status(200).json({ message: "connection successful" })
+
         }
 
     } catch (error) {

@@ -22,8 +22,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
+    "redis": "^4.7.0",
     "shared": "file:..\\shared\\dist",
     "socket.io": "^4.8.1"
   },

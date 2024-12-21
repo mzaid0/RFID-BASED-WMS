@@ -2,6 +2,8 @@ server/node_modules
 # Keep environment variables out of version control
 server/.env
 server/dist
+server/uploads/**/*.jpg
+server/uploads/**/*.png
 
 readerServer/node_modules
 # Keep environment variables out of version control

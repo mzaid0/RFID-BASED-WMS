@@ -1,10 +1,11 @@
 "use client";
 
+import { useUserStore } from "@/store/user.store";
 import { ArrowRight } from "lucide-react"; // Using Arrow icon for button
 import Link from "next/link"; // Importing Link from Next.js
 import { BiRfid } from "react-icons/bi"; // Using RFID icon
 const HomePage = () => {
-  const login = localStorage.getItem("user-info");
+  const { userInfo } = useUserStore()
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 via-blue-500 to-blue-800  overflow-hidden p-6">
@@ -28,7 +29,7 @@ const HomePage = () => {
               className="flex items-center px-6 py-3 bg-white text-blue-700 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 transform group"
             >
               <span className="font-semibold tracking-wide">
-                {login ? "Go to Dashboard" : "Get Started"}
+                {userInfo ? "Go to Dashboard" : "Get Started"}
               </span>
               <ArrowRight className="ml-3 h-6 w-6 transition-transform transform group-hover:translate-x-2" />
             </Link>

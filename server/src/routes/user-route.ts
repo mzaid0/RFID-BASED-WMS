@@ -2,21 +2,27 @@
 import { Router } from "express";
 import {
   getAllUsers,
-  loginUser,
   logoutUser,
   registerUser,
   upload,
 } from "../controllers/user-controller.js";
-import { isAuthenticated } from "../middlewares/auth-middleware.js";
-import { authorizeRoles } from "../middlewares/role-middleware.js";
-const router = Router();
+import { isAuthenticated } from "../middlewares/auth-middleware";
+import { authorizeRoles } from "../middlewares/role-middleware";
+import { adminSignup } from "../controllers/userController/adminSignup";
+import { loginUser } from "../controllers/userController/loginUser";
+const userRouter = Router();
 
 // Use the uploadSingle middleware for the /register route
-router.route("/register").post(upload.single("profilePicture"), registerUser);
-router.route("/login").post(loginUser);
-router.route("/logout").post(logoutUser);
-router
-  .route("/users")
-  .get(isAuthenticated, authorizeRoles(["Admin"]), getAllUsers);
+userRouter.route("/register").post(upload.single("profilePicture"), registerUser);
 
-export default router;
+userRouter.route("/login").post(loginUser);
+
+userRouter.route("/logout").post(logoutUser);
+
+userRouter.route("/admin-signup").post(adminSignup);
+
+userRouter
+  .route("/users")
+  .get(isAuthenticated, authorizeRoles(["Admin", "Manager"]), getAllUsers);
+
+export default userRouter;

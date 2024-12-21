@@ -23,7 +23,6 @@
     "strictPropertyInitialization": true,        // Enable strict checking of property initialization in classes
     "baseUrl": ".",                              // Base directory to resolve non-relative module names
     "paths": {
-      "@/*": ["./src/*"],
       "shared": ["../shared/dist/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"] // Specify multiple type root locations

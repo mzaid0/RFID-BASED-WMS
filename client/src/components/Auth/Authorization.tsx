@@ -1,5 +1,5 @@
 import { useUserStore } from "@/store/user.store";
-import { Role } from "@/types/role";
+import { Role } from "shared/types/role";
 import { ReactNode } from "react";
 
 

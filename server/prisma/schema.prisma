@@ -26,10 +26,10 @@ model User {
 }
 
 model ParcelDetails {
-  id                   String     @id @default(cuid())
+  id                   String    @id @default(cuid())
   parcelName           String
   parcelPrice          String
-  parcelDate           DateTime   @default(now())
+  parcelDate           DateTime  @default(now())
   status               Status
   parcelTrackingNumber String
   parcelWeight         Float
@@ -62,8 +62,10 @@ enum Role {
 
 model Warehouse {
   id               String          @id @default(uuid())
-  warehouseName    String
-  warehouseAddress String
+  warehouseName    String          @unique
+  warehouseAddress String          @unique
   parcels          ParcelDetails[]
   employees        User[]
+
+  @@index([warehouseName])
 }

@@ -9,10 +9,13 @@ import Authenticate from "@/components/Auth/Authentication";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
+import { Role } from "shared/types/role";
 
 // Define the validation schema for signup, adding a role field
 // Define the validation schema for signup, adding a role field
-const signupSchema = z.object({
+const roles = ["Admin", "CounterMan", "Manager", "Worker"] as Role[]
+
+const registerSchemaValidator = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
   email: z
@@ -23,13 +26,13 @@ const signupSchema = z.object({
     .string()
     .min(1, "Password is required")
     .min(6, "Password must be at least 6 characters"),
-  role: z.enum(["Admin", "User"], {
+  role: z.enum(["Admin", "CounterMan", "Manager", "Worker"], {
     errorMap: () => ({ message: "Role is required" }),
   }),
 });
 
 // Extending SignupFormInputs to include profilePicture
-type SignupFormInputs = z.infer<typeof signupSchema> & {
+type RegisterSchema = z.infer<typeof registerSchemaValidator> & {
   profilePicture: File | null;
 };
 
@@ -37,13 +40,8 @@ const Registration: React.FC = () => {
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const { toast } = useToast();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<SignupFormInputs>({
-    resolver: zodResolver(signupSchema),
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchemaValidator),
   });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +51,7 @@ const Registration: React.FC = () => {
   };
 
   const mutation = useMutation({
-    mutationFn: async (data: SignupFormInputs) => {
+    mutationFn: async (data: RegisterSchema) => {
       const formData = new FormData();
       formData.append("firstName", data.firstName);
       formData.append("lastName", data.lastName);
@@ -90,7 +88,7 @@ const Registration: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: SignupFormInputs) => {
+  const onSubmit = (data: RegisterSchema) => {
     mutation.mutate({
       ...data,
       profilePicture: profilePicture,
@@ -158,8 +156,12 @@ const Registration: React.FC = () => {
                   <option value="" disabled>
                     Choose your role
                   </option>
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
+                  {
+                    roles.map((role) => (
+                      <option value={role} key={`${role}-role`}>{role}</option>
+                    ))
+                  }
+
                 </select>
                 {errors.role && (
                   <p className="text-red-600 text-sm mt-1">

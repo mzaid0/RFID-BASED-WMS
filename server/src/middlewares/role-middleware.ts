@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-
+import { Role } from "shared/types/role";
 // Custom Request type that includes the `user` property
 
-export const authorizeRoles = (roles: string[]) => {
+export const authorizeRoles = (roles: Role[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     // Ensure req.user exists and check if role is authorized
 

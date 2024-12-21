@@ -8,5 +8,3 @@ redisClient
     .then(()=>console.log("Redis connected."))
     
 export const redis = new Redis()
-
-redis.set("connection-status", "disconnected")

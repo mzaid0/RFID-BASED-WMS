@@ -23,9 +23,9 @@ function Authenticate({ children }: T_Authenticate) {
 
   useEffect(() => {
     setUserInfo(getLocalStorage("user-info") as User);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(userInfo, !userInfo && mounted)
   // logout the user if userInfo is undefined
   useEffect(() => {
     if (!userInfo && mounted) {

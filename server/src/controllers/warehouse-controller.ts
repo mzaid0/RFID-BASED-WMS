@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import db from "../utils/db.js"; // Create a new Warehouse
-export const createWarehouse = async (req: Request, res: Response) => {
+export const addWarehouse = async (req: Request, res: Response) => {
   const { warehouseName, warehouseAddress } = req.body;
 
   try {
@@ -13,6 +13,15 @@ export const createWarehouse = async (req: Request, res: Response) => {
       return;
     }
 
+    const findWarehouse = await db.warehouse.findUnique({
+      where: {
+        warehouseName
+      }
+    });
+    if (warehouseName) {
+      res.status(403).json({ success: false, warehouseName: "Warehouse name already exists" });
+      return
+    }
     // Create warehouse
     const newWarehouse = await db.warehouse.create({
       data: {

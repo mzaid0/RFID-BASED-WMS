@@ -2,12 +2,12 @@ import { Socket } from "net";
 import { MaindBoard_Type, Module_Type, ReaderType } from "../enums";
 import { reader } from "../hardwareDetails";
 import { socketWriteWithResponse } from "../helpers/socketWriteWithResponse";
-import { tcpClientSocket } from "../app";
+import { clientSocket, tcpClientSocket } from "../app";
 import { startReading } from "./startReading";
 import { connectReader } from "../helpers/connectReader";
 import { wait } from "../helpers/wait";
 import { printResponseInHex } from "../helpers/printResponseInHex";
-import { redisClient } from "../libs/redis";
+import { redis } from "../libs/redis";
 
 export const establishConnection = async (client: Socket) => {
 
@@ -93,10 +93,9 @@ export const establishConnection = async (client: Socket) => {
         const readerDetails = await socketWriteWithResponse(Buffer.from([0xFF, 0x02, 0x10, 0x00, 0x00,]), { wait: true, appendCrcToInput: true })
         const readerYearModel = Number(Array.from(readerDetails.subarray(5, 9)).join(""));
         const serialNumber = Array.from(readerDetails.subarray(9, 17)).join("")
-     
 
-        await redisClient.set(`reader:${readerYearModel}-${serialNumber}`, JSON.stringify({ connected: true }))
-        // console.log(3)
-        // await startReading()
+        const prop = { readerYearModel, serialNumber, address: "Sialkot", connectionStatus: "connected" }
+        return prop
+
     }
 }

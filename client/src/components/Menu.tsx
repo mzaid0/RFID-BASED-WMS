@@ -7,11 +7,11 @@ import { LuPackage, LuPackagePlus } from "react-icons/lu";
 import { MdOutlineDashboard } from "react-icons/md";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import Authorization from "./Auth/Authorization";
-import { Role } from "@/types/role";
 import axios from "axios";
 import { useUserStore } from "@/store/user.store";
 import { DeleteLocalStorage } from "@/lib/local-storage";
 import { useToast } from "@/hooks/use-toast";
+import { Role } from "shared/types/role"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -121,23 +121,20 @@ const Menu = () => {
                   onClick={
                     item.name === "Logout" ? handleLogoutClick : undefined
                   }
-                  className={`flex items-center justify-center lg:justify-start gap-3 rounded-lg py-2 transition-colors duration-200 px-2  ${
-                    isActive
+                  className={`flex items-center justify-center lg:justify-start gap-3 rounded-lg py-2 transition-colors duration-200 px-2  ${isActive
                       ? "bg-blue-100 text-blue-600 font-semibold"
                       : "text-gray-500 hover:bg-blue-50"
-                  }`}
+                    }`}
                 >
                   <span
-                    className={`${
-                      isActive ? "text-blue-600" : "text-gray-500"
-                    }`}
+                    className={`${isActive ? "text-blue-600" : "text-gray-500"
+                      }`}
                   >
                     {item.icon}
                   </span>
                   <span
-                    className={`hidden lg:block ${
-                      isActive ? "text-blue-600" : ""
-                    }`}
+                    className={`hidden lg:block ${isActive ? "text-blue-600" : ""
+                      }`}
                   >
                     {item.name}
                   </span>
