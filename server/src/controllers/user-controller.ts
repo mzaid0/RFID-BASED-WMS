@@ -6,9 +6,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import db from "../utils/db.js";
 
-// Define __dirname for ES module scope
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Set the absolute path for the uploads directory
 const uploadDirectory = path.resolve(__dirname, "../../uploads");

@@ -11,14 +11,7 @@ const app = express()
 export const tcpClientSocket = new net.Socket();
 
 const httpServer = http.createServer();
-io()
-const socketIo = new SocketServer(httpServer, {
-    cors: {
-        origin: "*", // Allow all origins for development
-        methods: ["GET", "POST"]
-    }
-});
-socketIoRegister(socketIo)
+
 const port = process.env.PORT || 2000;
 
 app.get("/api/connect-reader", connectReaderContoller);
