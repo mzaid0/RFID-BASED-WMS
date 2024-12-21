@@ -4,6 +4,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import cookieParser from "cookie-parser";
 
 // Define __dirname for ES module scope
 const __filename = fileURLToPath(import.meta.url);
@@ -24,7 +25,7 @@ if (!fs.existsSync(uploadDirectory)) {
 
 // Serve static files from the uploads directory
 app.use(express.static("uploads"));
-
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(
@@ -37,10 +38,12 @@ app.use(
 // Import routes for handling parcel and user requests
 import parcelRoute from "./routes/parcel-route.js";
 import userRoute from "./routes/user-route.js";
+import warehouseRoute from "./routes/warehouse-route.js";
 
 // Use the imported routes to handle requests
 app.use("/api/v1/parcel", parcelRoute);
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/warehouse", warehouseRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

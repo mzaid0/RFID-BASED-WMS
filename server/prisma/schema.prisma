@@ -14,20 +14,22 @@ datasource db {
 }
 
 model User {
-  id             String  @id @default(uuid())
+  id             String     @id @default(uuid())
   firstName      String
   lastName       String
-  email          String  @unique
+  email          String     @unique
   password       String
   profilePicture String?
   role           Role
+  warehouse      Warehouse? @relation(fields: [warehouseId], references: [id])
+  warehouseId    String?
 }
 
 model ParcelDetails {
-  id                   String   @id @default(cuid())
+  id                   String     @id @default(cuid())
   parcelName           String
   parcelPrice          String
-  parcelDate           DateTime @default(now())
+  parcelDate           DateTime   @default(now())
   status               Status
   parcelTrackingNumber String
   parcelWeight         Float
@@ -41,6 +43,8 @@ model ParcelDetails {
   receiverEmail        String
   receiverPhoneNumber  String
   receiverAddress      String
+  warehouse            Warehouse @relation(fields: [warehouseId], references: [id])
+  warehouseId          String
 }
 
 enum Status {
@@ -51,5 +55,15 @@ enum Status {
 
 enum Role {
   Admin
-  User
+  Manager
+  CounterMan
+  Worker
+}
+
+model Warehouse {
+  id               String          @id @default(uuid())
+  warehouseName    String
+  warehouseAddress String
+  parcels          ParcelDetails[]
+  employees        User[]
 }

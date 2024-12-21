@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import db from "../utils/db.js";
-import path from "path";
 import bcrypt from "bcrypt";
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import multer from "multer";
+import path from "path";
 import { fileURLToPath } from "url";
+import db from "../utils/db.js";
 
 // Define __dirname for ES module scope
 const __filename = fileURLToPath(import.meta.url);
@@ -28,21 +28,12 @@ export const upload = multer({
   }),
 });
 
-interface UserRequest extends Request {
-  file?: Express.Multer.File; // Type the uploaded file as optional
-  body: {
-    email: string;
-    password: string;
-    [key: string]: any; // Type the other body fields to be dynamic (this is fine for now)
-  };
-}
-
 export const registerUser = async (
-  req: UserRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const { email, password, ...otherDetails } = req.body;
+    const { email, password, warehouseAddress, ...otherDetails } = req.body;
 
     if (!password) {
       res.status(400).json({
@@ -65,12 +56,11 @@ export const registerUser = async (
       return;
     }
 
-    // Define salt rounds and hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Check if profile image is uploaded
     const profilePicture = req.file ? req.file.filename : null;
+
     console.log(req.file);
 
     // Prepare the data to create the user
@@ -78,12 +68,21 @@ export const registerUser = async (
       email,
       password: hashedPassword,
       profilePicture,
-      ...otherDetails, // Spread other dynamic fields from the request body
+      warehouseAddress, // Spread other dynamic fields from the request body
+      ...otherDetails,
     };
 
     // Save the new user with the hashed password
     const newUser = await db.user.create({
-      data: userData, // Pass the prepared user data
+      data: {
+        email,
+        password: hashedPassword,
+        profilePicture: profilePicture,
+        warehouseId: req.user?.warehouseId,
+        firstName: req.body?.firstName,
+        lastName: req.body.lastName,
+        role: "Manager",
+      }, // Pass the prepared user data
     });
 
     res.status(201).json({
@@ -108,6 +107,16 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     // Check if the user exists
     const existingUser = await db.user.findFirst({
       where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        warehouse: {
+          select: {
+            warehouseAddress: true,
+          },
+        },
+      },
     });
 
     if (!existingUser) {
@@ -131,6 +140,16 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    if (
+      req.body.warehouseAddress !== existingUser.warehouse?.warehouseAddress
+    ) {
+      res.status(401).json({
+        success: false,
+        message: "Invalid Credentials",
+      });
+      return;
+    }
+
     // Generate a JWT token
     const token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
@@ -138,10 +157,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       { expiresIn: "1h" }
     );
 
-    // Set the JWT token as a cookie
     res.cookie("authToken", token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 1000, // 1 hour
     });
 

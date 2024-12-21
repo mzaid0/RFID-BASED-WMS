@@ -6,6 +6,10 @@
     "moduleResolution": "Node",
     "outDir": "./dist",
     "strict": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "shared": ["../shared/dist/*"]
+    }
   }
 }

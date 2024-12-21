@@ -9,7 +9,6 @@ import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import Authenticate from "@/components/Auth/Authentication";
 
-// Zod schema for form validation
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const parcelSchema = z.object({
   parcelName: z.string().min(1, "Parcel Name is required"),
@@ -35,7 +34,6 @@ const parcelSchema = z.object({
   receiverAddress: z.string().min(1, "Receiver Address is required"),
 });
 
-// Define the FormData type
 type FormData = z.infer<typeof parcelSchema>;
 
 const UpdateParcel: FC = () => {
@@ -44,7 +42,6 @@ const UpdateParcel: FC = () => {
 
   const { id }: { id: string } = useParams();
 
-  // Initialize react-hook-form
   const {
     register,
     handleSubmit,
@@ -52,7 +49,6 @@ const UpdateParcel: FC = () => {
     reset,
   } = useForm<FormData>();
 
-  // Fetch parcel data with TanStack Query
   const fetchParcel = async (parcelId: string) => {
     const response = await axios.get(
       `http://localhost:4000/api/v1/parcel/view/${parcelId}`

@@ -3,7 +3,6 @@
 import { ArrowRight } from "lucide-react"; // Using Arrow icon for button
 import Link from "next/link"; // Importing Link from Next.js
 import { BiRfid } from "react-icons/bi"; // Using RFID icon
-
 const HomePage = () => {
   const login = localStorage.getItem("user-info");
 
