@@ -3,6 +3,11 @@ server/node_modules
 server/.env
 server/dist
 
+readerServer/node_modules
+# Keep environment variables out of version control
+readerServer/.env
+readerServer/dist
+
 
 shared/node_modules
 # Keep environment variables out of version control
