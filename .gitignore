@@ -7,9 +7,57 @@ readerServer/node_modules
 # Keep environment variables out of version control
 readerServer/.env
 readerServer/dist
+readerServer/tsconfig.tsbuildinfo
 
 
 shared/node_modules
 # Keep environment variables out of version control
 shared/.env
 shared/dist
+shared/tsconfig.tsbuildinfo
+
+
+
+
+
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+client/node_modules
+client/.pnp
+client/.pnp.*
+client/.yarn/*
+client/!.yarn/patches
+client/!.yarn/plugins
+client/!.yarn/releases
+client/!.yarn/versions
+
+# testing
+client/coverage
+
+# next.js
+client/.next/
+client/out/
+
+# production
+client/build
+
+# misc
+client/.DS_Store
+client/*.pem
+
+# debug
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+
+# env files (can opt-in for commiting if needed)
+client/.env*
+
+# vercel
+client/.vercel
+
+# typescript
+client/*.tsbuildinfo
+client/next-env.d.ts
