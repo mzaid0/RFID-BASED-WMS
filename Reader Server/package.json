@@ -1,0 +1,27 @@
+{
+  "name": "new-folder",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch dist/app.js",
+    "start": "PORT=3000 NODE_ENV=development node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/ioredis": "^4.28.10",
+    "cap": "^0.2.1",
+    "express": "^4.21.0",
+    "ioredis": "^5.4.1",
+    "redis": "^4.7.0",
+    "serialport": "^12.0.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.1"
+  }
+}

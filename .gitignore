@@ -1,0 +1,10 @@
+server/node_modules
+# Keep environment variables out of version control
+server/.env
+server/dist
+
+
+shared/node_modules
+# Keep environment variables out of version control
+shared/.env
+shared/dist
